@@ -1,0 +1,23 @@
+https://www.llama.com/docs/llama-everywhere/running-meta-llama-on-linux/
+
+
+conda create --name llamaEnv python=3.11.10
+
+https://llama3-2-lightweight.llamameta.net/*?Policy=eyJTdGF0ZW1lbnQiOlt7InVuaXF1ZV9oYXNoIjoib3QwaGo1eW05ZWY5OTBlMXh0aXlkcnBjIiwiUmVzb3VyY2UiOiJodHRwczpcL1wvbGxhbWEzLTItbGlnaHR3ZWlnaHQubGxhbWFtZXRhLm5ldFwvKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTczMzM5ODQ2NX19fV19&Signature=BYkeGTc7bpVRI6SASiJf-1gsKhAKwR6k8fuS8aIQ8sWQdRL2y2-htr0ev3e6ZPELBMPmeXmhNELTIn8XQf6%7ERj1%7E8t2uz4cSuYGrPD5YWdHEFPYM6GASH5zSwdaCXYp-4yHWzrDzJARvD1j1ljPa8ypcP-5jz7RI5LEdBel46ytKzJF2%7EIDj9vVDUMmYp0STBjFKmzvBkI%7EXRsmh26nCHOMNryniuRNnqrx10u4gfm6uoLGjGgcvMvkIHJ4chRJvCOj9Dv1FZK8RS-uJbBaf966p7YstF3kOSUk5%7EeOCfq9g1l-N8pwykBa0IXAOZZzBuFuW%7E%7EsIq5lqOe2AAtX90w__&Key-Pair-Id=K15QRJLYKIFSLZ&Download-Request-ID=1227061041701592
+
+
+llama model download --source meta --model-id meta-llama/Llama-3.2-1B-Instruct
+
+
+/home/giri/HFTests/llama/checkpoints/Llama3.2-1B-Instruct
+
+Add 'use_scaled_rope' to line 33 of the llama3/llama/model.py file
+Just add:
+use_scaled_rope: bool = True
+
+TIKTOKEN_CACHE_DIR=""
+
+torchrun --nproc_per_node 1 example_text_completion.py --ckpt_dir /home/giri/HFTests/llama/checkpoints/Llama3.2-1B-Instruct/ --tokenizer_path /home/giri/HFTests/llama/checkpoints/Llama3.2-1B-Instruct/tokenizer.model --max_seq_len 128 --max_batch_size 4
+
+
+torchrun --nproc_per_node 1 example_chat_completion.py --ckpt_dir /home/giri/HFTests/llama/checkpoints/Llama3.2-1B-Instruct/ --tokenizer_path /home/giri/HFTests/llama/checkpoints/Llama3.2-1B-Instruct/tokenizer.model --max_seq_len 512 --max_batch_size 6
